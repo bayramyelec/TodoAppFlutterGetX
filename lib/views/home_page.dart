@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/get_core.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/route_manager.dart';
+import 'package:get/state_manager.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:todo_app_flutter_getx/controllers/todo_controllers.dart';
 import 'package:todo_app_flutter_getx/data/src/colors.dart';
-import 'package:todo_app_flutter_getx/views/add_todo/add_todo_page.dart';
-import 'package:todo_app_flutter_getx/views/home/home_controller.dart';
+import 'package:todo_app_flutter_getx/routes/app_routes.dart';
 
-class HomePage extends GetWidget<HomeController> {
+class HomePage extends GetWidget<TodoControllers> {
   const HomePage({super.key});
-
-  static const String routeName = '/views/home/home_page';
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +39,10 @@ class HomePage extends GetWidget<HomeController> {
       centerTitle: false,
       actions: [
         IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.date_range_sharp),
+          onPressed: () {
+            Get.toNamed(AppRoutes.completedTodos);
+          },
+          icon: Icon(Icons.checklist),
           color: HexColor(appbarColor),
         ),
       ],
@@ -54,20 +52,27 @@ class HomePage extends GetWidget<HomeController> {
 
   Widget _buildBody() {
     return Obx(
-      () => ListView.builder(
-        itemCount: controller.todos.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 2, vertical: 5),
-            child: _buildListTile(index),
-          );
-        },
-      ),
+      () =>
+          controller.todos.isEmpty
+              ? Center(
+                child: Text(
+                  'Todo not found.',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              )
+              : ListView.builder(
+                itemCount: controller.todos.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 2, vertical: 5),
+                    child: _buildListTile(index),
+                  );
+                },
+              ),
     );
   }
 
   Widget _buildListTile(int index) {
-    final todo = controller.todos[index];
     return Card(
       shadowColor: Colors.black,
       color: Colors.white,
@@ -77,9 +82,10 @@ class HomePage extends GetWidget<HomeController> {
         child: Row(
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  todo.title,
+                  controller.todos[index].title,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: HexColor(mainColor),
@@ -87,7 +93,7 @@ class HomePage extends GetWidget<HomeController> {
                   ),
                 ),
                 Text(
-                  todo.subTitle,
+                  controller.todos[index].description,
                   style: TextStyle(
                     fontWeight: FontWeight.normal,
                     color: Colors.black,
@@ -96,30 +102,18 @@ class HomePage extends GetWidget<HomeController> {
               ],
             ),
             Spacer(),
-            InkWell(
-              onTap: () {},
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(Icons.edit, size: 20, color: HexColor(mainColor)),
-              ),
+            IconButton(
+              onPressed: () {
+                controller.deleteTask(controller.todos[index].id);
+              },
+              icon: Icon(Icons.delete, size: 20, color: HexColor(mainColor)),
             ),
-            InkWell(
-              onTap: () {},
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(Icons.delete, size: 20, color: HexColor(mainColor)),
-              ),
-            ),
-            InkWell(
-              onTap: () {},
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.check_circle_outline,
-                  size: 20,
-                  color: HexColor(mainColor),
-                ),
-              ),
+            Checkbox(
+              value: controller.todos[index].isCompleted,
+              onChanged:
+                  (_) => controller.toggleTodoCompletion(
+                    controller.todos[index].id,
+                  ),
             ),
           ],
         ),
@@ -128,6 +122,6 @@ class HomePage extends GetWidget<HomeController> {
   }
 
   void _goToAddTaskPage() {
-    Get.toNamed(AddTodoPage.routeName);
+    Get.toNamed(AppRoutes.addTodo);
   }
 }

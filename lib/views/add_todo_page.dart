@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:get/utils.dart';
+import 'package:get/state_manager.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:todo_app_flutter_getx/controllers/todo_controllers.dart';
 import 'package:todo_app_flutter_getx/data/src/colors.dart';
 
-class AddTodoPage extends StatelessWidget {
-  const AddTodoPage({super.key});
+class AddTodoPage extends GetWidget<TodoControllers> {
+  AddTodoPage({super.key});
 
-  static const String routeName = '/views/add_todo/add_todo_page';
+  final titleController = TextEditingController();
+  final subtitleController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +41,35 @@ class AddTodoPage extends StatelessWidget {
         spacing: 10,
         children: [
           SizedBox(height: 30),
-          TextField(decoration: InputDecoration(hintText: 'Title')),
-          TextField(decoration: InputDecoration(hintText: 'Detail')),
+          TextField(
+            controller: titleController,
+            decoration: InputDecoration(hintText: 'Title'),
+          ),
+          TextField(
+            controller: subtitleController,
+            decoration: InputDecoration(hintText: 'Detail'),
+          ),
           SizedBox(height: 10),
           SizedBox(
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                if (titleController.text.isEmpty &&
+                    subtitleController.text.isEmpty) {
+                  Get.snackbar(
+                    'Hata',
+                    'Alanlar boş olamaz',
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                  return;
+                }
+                controller.addTodo(
+                  titleController.text,
+                  subtitleController.text,
+                );
+                _goToBack();
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: HexColor(mainColor),
                 shape: RoundedRectangleBorder(
