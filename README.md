@@ -1,16 +1,41 @@
-# todo_app_flutter_getx
+# 📋 Todo App - Flutter + GetX
 
-A new Flutter project.
+Merhaba! Bu proje, Flutter framework'ü kullanılarak geliştirilen basit bir yapılacaklar listesi (Todo App) uygulamasıdır. Durum yönetimi için **GetX** kullanılmıştır.
 
-## Getting Started
+## 🚀 Özellikler
 
-This project is a starting point for a Flutter application.
+- ✅ Görev ekleme
+- 📝 Görevleri listeleme
+- ❌ Görev silme
+- ☑️ Görev tamamlandı olarak işaretleme
+- 💾 GetX ile reactive state management
 
-A few resources to get you started if this is your first Flutter project:
+## 🧱 Kullanılan Teknolojiler
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- [Flutter](https://flutter.dev/)
+- [Dart](https://dart.dev/)
+- [GetX](https://pub.dev/packages/get)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📸 Ekran Görüntüleri
+
+<a><img src="https://github.com/user-attachments/assets/bd1bf366-ada9-4622-bc98-b59b61ebead4" width="150" /></a>
+<a><img src="https://github.com/user-attachments/assets/25e14697-5495-4afc-ad7d-4c0633e20b65" width="150" /></a>
+<a><img src="https://github.com/user-attachments/assets/66274803-149e-4d55-a680-b4c1a1cbcc44" width="150" /></a>
+<a><img src="https://github.com/user-attachments/assets/c06ed08c-7742-4e66-ab56-2a9fc63d4291" width="150" /></a>
+<a><img src="https://github.com/user-attachments/assets/5405e888-7ac7-4139-be5e-7c60c9de5cd5" width="150" /></a>
+
+
+## 📁 Proje Yapısı
+
+```bash
+lib/
+├── bindings/
+│   └── app_binding.dart
+├── controllers/
+│   └── todo_controller.dart
+├── models/
+│   └── todo.dart
+├── views/
+│   ├── home_view.dart
+│   └── add_todo_view.dart
+└── main.dart
